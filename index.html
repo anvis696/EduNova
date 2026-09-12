@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduNova</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        header {
+            background: #4f46e5;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 34px;
+        }
+
+        header p {
+            margin-bottom: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin-top: 5px;
+        }
+
+        button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .subjects {
+            display: none;
+            background: white;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .subject-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .subject {
+            background: #f1f5ff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .tutor,
+        .scanner {
+            background: white;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        #question {
+            width: 75%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        #answer {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f1f5ff;
+            border-radius: 10px;
+            min-height: 30px;
+        }
+
+        #scanInput {
+            display: none;
+        }
+
+        #scanResult {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f1f5ff;
+            border-radius: 10px;
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .subject-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            #question {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🚀 EduNova</h1>
+    <p>Your AI-powered learning companion</p>
+</header>
+
+<div class="container">
+
+    <div class="welcome">
+        <h2>👋 Welcome to EduNova!</h2>
+        <p>Learn, practice and ask questions with your personal learning companion.</p>
+    </div>
+
+    <h2>📚 My Learning Dashboard</h2>
+
+    <div class="cards">
+
+        <!-- CLASS -->
+        <div class="card">
+            <h3>🏫 My Class</h3>
+            <p>Select your class</p>
+
+            <select id="classSelect" onchange="selectClass()">
+                <option value="">Choose Class</option>
+                <option value="6">Class 6</option>
+                <option value="7">Class 7</option>
+                <option value="8">Class 8</option>
+                <option value="9">Class 9</option>
+                <option value="10">Class 10</option>
+                <option value="11">Class 11</option>
+                <option value="12">Class 12</option>
+            </select>
+
+            <p id="selectedClass"></p>
+        </div>
+
+        <!-- SUBJECTS -->
+        <div class="card">
+            <h3>📖 My Subjects</h3>
+            <p>Explore your subjects</p>
+            <button onclick="showSubjects()">Open Subjects</button>
+        </div>
+
+        <!-- SCAN TO ASK -->
+        <div class="card">
+            <h3>📷 Scan to Ask</h3>
+            <p>Scan a question from your book</p>
+
+            <button onclick="openScanner()">
+                📷 Scan Question
+            </button>
+
+            <input
+                type="file"
+                id="scanInput"
+                accept="image/*"
+                capture="environment"
+                onchange="scanQuestion()"
+            >
+        </div>
+
+    </div>
+
+
+    <!-- SUBJECT SECTION -->
+    <div class="subjects" id="subjectsSection">
+
+        <h2>📚 My Subjects</h2>
+
+        <p id="subjectMessage">
+            Select your class first to see your subjects.
+        </p>
+
+        <div class="subject-list">
+
+            <div class="subject">📐 Maths</div>
+            <div class="subject">🔬 Science</div>
+            <div class="subject">📖 English</div>
+            <div class="subject">💻 Computer</div>
+            <div class="subject">🌍 Social Science</div>
+            <div class="subject">🇮🇳 Hindi</div>
+            <div class="subject">🗺️ Geography</div>
+            <div class="subject">📜 History</div>
+
+        </div>
+
+    </div>
+
+
+    <!-- AI TUTOR -->
+    <div class="tutor" id="tutorSection">
+
+        <h2>🤖 EduNova AI Tutor</h2>
+
+        <p>Ask me a question about your studies!</p>
+
+        <input
+            type="text"
+            id="question"
+            placeholder="Example: What is gravity?"
+        >
+
+        <button onclick="askTutor()">Ask</button>
+
+        <p id="answer"></p>
+
+    </div>
+
+
+    <!-- SCAN RESULT -->
+    <div class="scanner" id="scannerSection">
+
+        <h2>📷 Scan to Ask</h2>
+
+        <p>
+            Take a photo of a question that you don't understand.
+        </p>
+
+        <div id="scanResult"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function selectClass() {
+
+    let selected =
+        document.getElementById("classSelect").value;
+
+    let message =
+        document.getElementById("selectedClass");
+
+    if (selected === "") {
+
+        message.innerText = "";
+
+    } else {
+
+        message.innerText =
+            "✅ Class " + selected + " selected!";
+
+    }
+}
+
+
+function showSubjects() {
+
+    let section =
+        document.getElementById("subjectsSection");
+
+    section.style.display = "block";
+
+    section.scrollIntoView({
+        behavior: "smooth"
+    });
+
+    let selected =
+        document.getElementById("classSelect").value;
+
+    let message =
+        document.getElementById("subjectMessage");
+
+    if (selected === "") {
+
+        message.innerText =
+            "🏫 Please select your class first.";
+
+    } else {
+
+        message.innerText =
+            "📚 Subjects for Class " + selected + ":";
+
+    }
+}
+
+
+function openScanner() {
+
+    document.getElementById("scanInput").click();
+
+}
+
+
+function scanQuestion() {
+
+    let file =
+        document.getElementById("scanInput").files[0];
+
+    let result =
+        document.getElementById("scanResult");
+
+    if (file) {
+
+        result.style.display = "block";
+
+        result.innerHTML =
+            "📸 Question image selected!<br><br>" +
+            "🤖 EduNova will explain this question step-by-step " +
+            "when image understanding is connected.";
+
+        result.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+}
+
+
+async function askTutor() {
+
+    let question =
+        document.getElementById("question").value;
+
+    let answer =
+        document.getElementById("answer");
+
+    if (question === "") {
+
+        answer.innerText =
+            "Please type a question first.";
+
+        return;
+    }
+
+    answer.innerText =
+        "🤖 EduNova Tutor is thinking...";
+
+    try {
+
+        const response =
+            await fetch("/ask", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    question: question
+                })
+
+            });
+
+        const data =
+            await response.json();
+
+        answer.innerText =
+            data.answer;
+
+    } catch (error) {
+
+        answer.innerText =
+            "❌ Backend se connection nahi ho pa raha.";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
