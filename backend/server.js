@@ -1,9 +1,15 @@
 const express = require("express");
 const path = require("path");
+const cors = require("cors");
 const { GoogleGenAI } = require("@google/genai");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Allow GitHub Pages to connect to EduNova backend
+app.use(cors({
+    origin: "https://anvis696.github.io"
+}));
 
 app.use(express.json({ limit: "10mb" }));
 
@@ -52,5 +58,5 @@ Question: ${question}`
 });
 
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`EduNova server running at http://localhost:${PORT}`);
+    console.log(`EduNova server running on port ${PORT}`);
 });
